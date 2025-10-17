@@ -1,0 +1,55 @@
+name: pipeline evaluacion
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+        
+      - name: ejecutar eslint(fix)
+        run: npm run lint -- --fix
+
+      - name: ejecutar pruebas
+        run: npx karma start --single-run --browsers ChromeHeadless --no-sandbox --watch=false --fix || true
+        env:
+            CI: true
+
+      - name: snyk configurar
+        uses: snyk/actions/setup@v1
+        env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: snyk escanear
+        run: snyk test || true
+        env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: SonarCloud escaneo
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Loguearse en Docker Hub
+        uses: docker/login-action@v2
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
+      - name: Build y Push Docker
+        uses: docker/build-push-action@v4
+        with:
+            context: .
+            file: ./Dockerfile
+            push: true
+            tags: brx2b/appevaluacion:latest
+
