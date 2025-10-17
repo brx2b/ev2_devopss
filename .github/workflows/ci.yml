@@ -21,7 +21,7 @@ jobs:
 
 
       - name: ejecutar eslint(fix)
-        run: npx eslint . --fix || true
+        run: npm run lint -- --fix
 
       - name: ejecutar pruebas
         run: npx karma start --single-run --browsers ChromeHeadless --no-sandbox --watch=false --fix || true
