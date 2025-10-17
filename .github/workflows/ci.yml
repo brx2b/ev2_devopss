@@ -18,7 +18,7 @@ jobs:
           node-version: 18
         
       - name: ejecutar eslint(fix)
-        run: npm run lint -- --fix
+        run: npx run lint -- --fix
 
       - name: ejecutar pruebas
         run: npx karma start --single-run --browsers ChromeHeadless --no-sandbox --watch=false --fix || true
