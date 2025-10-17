@@ -1,4 +1,4 @@
-name: pipeline evaluacion
+name: EV2-DevOps CI
 
 on:
   push:
