@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 18
       - name: Instalar dependencias
-        run: npm install
+        run: npm install typescript@4.9.5 --save-dev
 
 
       - name: ejecutar eslint(fix)
