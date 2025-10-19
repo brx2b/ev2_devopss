@@ -2,10 +2,10 @@ version: "3.9"
 
 services:
   app:
-    image: brx2b/ev2_devops:latest  # Reemplaza con tu imagen de Docker Hub
+    image: brx2b/ev2_devops:latest 
     container_name: app
     ports:
-      - "3000:3000"  # Ajusta según tu app Node.js
+      - "3000:3000"  
     environment:
       DB_HOST: db
       DB_USER: root
